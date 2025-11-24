@@ -1,7 +1,6 @@
 package io.agrisense.adapters.in.web;
 
 import io.agrisense.ports.in.ProcessMeasurementUseCase;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -12,29 +11,13 @@ import jakarta.ws.rs.core.Response;
 @Path("/measurements")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+
 public class MeasurementController {
 
-    @Inject
-    ProcessMeasurementUseCase processMeasurementUseCase;
+    private final ProcessMeasurementUseCase processMeasurementUseCase;
 
-    @POST
-    public Response createMeasurement(MeasurementRequest request) {
-        try {
-            processMeasurementUseCase.processMeasurement(
-                request.getSensorId(), 
-                request.getValue(), 
-                request.getUnit()
-            );
-            return Response.ok().build();
-        } catch (IllegalArgumentException e) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                          .entity(e.getMessage())
-                          .build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                          .entity("Internal server error")
-                          .build();
-        }
+    public MeasurementController(ProcessMeasurementUseCase processMeasurementUseCase) {
+        this.processMeasurementUseCase = processMeasurementUseCase;
     }
 
     public static class MeasurementRequest {
@@ -67,4 +50,25 @@ public class MeasurementController {
             this.unit = unit;
         }
     }
+
+    @POST
+    public Response createMeasurement(MeasurementRequest request) {
+        try {
+            processMeasurementUseCase.processMeasurement(
+                request.getSensorId(), 
+                request.getValue(), 
+                request.getUnit()
+            );
+            return Response.ok().build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                          .entity(e.getMessage())
+                          .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                          .entity("Internal server error")
+                          .build();
+        }
+    }
+
 }
