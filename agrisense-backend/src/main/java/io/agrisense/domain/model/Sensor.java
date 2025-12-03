@@ -4,13 +4,17 @@ public class Sensor {
     private Long id;
     private String name;
     private ESensorType type;
+    private String apiKey;
+    private Long fieldId; // Many-to-One relationship to Field
 
     public Sensor() {
     }
 
-    public Sensor(String name, ESensorType type) {
+    public Sensor(String name, ESensorType type, String apiKey, Long fieldId) {
         this.name = name;
         this.type = type;
+        this.apiKey = apiKey;
+        this.fieldId = fieldId;
     }
 
     public Long getId() {
@@ -35,5 +39,21 @@ public class Sensor {
 
     public void setType(ESensorType type) {
         this.type = type;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public Long getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(Long fieldId) {
+        this.fieldId = fieldId;
     }
 }
