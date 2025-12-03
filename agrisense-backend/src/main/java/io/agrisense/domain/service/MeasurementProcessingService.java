@@ -11,7 +11,10 @@ import io.agrisense.ports.out.AlertRepository;
 import io.agrisense.ports.out.AlertRuleRepository;
 import io.agrisense.ports.out.MeasurementRepository;
 import io.agrisense.ports.out.SensorRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 
+@ApplicationScoped
 public class MeasurementProcessingService implements ProcessMeasurementUseCase {
     
     private final SensorRepository sensorRepository;
@@ -30,6 +33,7 @@ public class MeasurementProcessingService implements ProcessMeasurementUseCase {
     }
 
     @Override
+    @Transactional
     public void processMeasurement(Long sensorId, double value, String unit) {
 
         Sensor sensor = sensorRepository.findById(sensorId);
