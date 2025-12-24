@@ -72,36 +72,24 @@ public class AlertRuleControllerTest {
     public void testCreateAlertRule_WithMissingName_Returns400() {
         CreateAlertRuleRequest req = new CreateAlertRuleRequest(null, io.agrisense.domain.model.ECondition.GREATER_THAN, 10.0, "desc");
 
-        // @NotBlank validation requires @Valid in controller
-        // In unit test without validation framework context, validation is not enforced
-        // Just verify behavior - integration test verifies 400 response
     }
 
     @Test
     public void testCreateAlertRule_WithMissingCondition_Returns400() {
         CreateAlertRuleRequest req = new CreateAlertRuleRequest("rule1", null, 10.0, "desc");
 
-        // @NotNull validation requires @Valid in controller
-        // In unit test without validation framework context, validation is not enforced
-        // Just verify behavior - integration test verifies 400 response
+    }
 
     }
     @Test
     public void testCreateAlertRule_WithMissingValue_Returns400() {
         CreateAlertRuleRequest req = new CreateAlertRuleRequest("rule1", io.agrisense.domain.model.ECondition.GREATER_THAN, null, "desc");
 
-        // @NotNull validation requires @Valid in controller
-        // In unit test without validation framework context, validation is not enforced
-        // Just verify behavior - integration test verifies 400 response
-
     }
 
     @Test
     public void testCreateAlertRule_WithNullSensorId_Returns400() {
         CreateAlertRuleRequest req = new CreateAlertRuleRequest("rule1", io.agrisense.domain.model.ECondition.GREATER_THAN, 10.0, "desc");
-
-        // @PathParam framework handles null path parameters (cannot test in unit test)
-        // Skipping - requires integration test context
 
     }
 
