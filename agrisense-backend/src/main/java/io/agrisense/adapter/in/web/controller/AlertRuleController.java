@@ -33,8 +33,10 @@ public class AlertRuleController {
     public Response createAlertRule(
             @PathParam("sensorId") Long sensorId,
             @Valid CreateAlertRuleRequest request) {
+        // Bean Validation (@NotNull, @NotBlank) handles field validation
+        // GlobalExceptionHandler catches ConstraintViolationException → 400 Bad Request
+        // GlobalExceptionHandler catches IllegalArgumentException → 404 Not Found
         
- 
         // 1. DTO -> Domain
         AlertRule ruleDomain = alertRuleMapper.toDomain(request);
 
@@ -43,6 +45,7 @@ public class AlertRuleController {
 
         // 3. Domain -> DTO
         AlertRuleResponse responseDTO = alertRuleMapper.toResponse(createdRule);
+
 
         return Response
                 .created(URI.create("/sensors/" + sensorId + "/rules/" + createdRule.getId()))
@@ -69,19 +72,12 @@ public class AlertRuleController {
     public Response updateAlertRule(
             @PathParam("sensorId") Long sensorId,
             @PathParam("ruleId") Long ruleId,
-            CreateAlertRuleRequest request) {
+            @Valid CreateAlertRuleRequest request) {
         
-        try {
-            AlertRule ruleDomain = alertRuleMapper.toDomain(request);
-            AlertRule updated = alertRuleUseCase.updateRule(ruleId, ruleDomain);
-            AlertRuleResponse responseDTO = alertRuleMapper.toResponse(updated);
-            return Response.ok(responseDTO).build();
-        } catch (IllegalArgumentException e) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
-                    .build();
-        }
+        AlertRule ruleDomain = alertRuleMapper.toDomain(request);
+        AlertRule updated = alertRuleUseCase.updateRule(ruleId, ruleDomain);
+        AlertRuleResponse responseDTO = alertRuleMapper.toResponse(updated);
+        return Response.ok(responseDTO).build();
     }
 
     @DELETE
@@ -90,14 +86,7 @@ public class AlertRuleController {
             @PathParam("sensorId") Long sensorId,
             @PathParam("ruleId") Long ruleId) {
         
-        try {
-            alertRuleUseCase.deleteRule(ruleId);
-            return Response.noContent().build();
-        } catch (IllegalArgumentException e) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
-                    .build();
-        }
+        alertRuleUseCase.deleteRule(ruleId);
+        return Response.noContent().build();
     }
 }

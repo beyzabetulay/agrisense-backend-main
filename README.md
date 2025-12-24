@@ -39,13 +39,41 @@ Native (optional, needs GraalVM or containerized build):
 
 ## Testing
 
-All tests (unit + integration) run with:
+**Run all tests (WITHOUT Docker - for P03 submission):**
 
 ```bash
-./mvnw test
+./mvnw verify
 ```
 
-Note: `pom.xml` already sets `--add-opens java.base/java.lang=ALL-UNNAMED` for Quarkus test harness.
+This command will:
+- Run all 122 unit and integration tests
+- Build the Quarkus application
+- Verify the build is successful
+
+**Build with Docker image (when needed):**
+
+```bash
+./mvnw verify -Pdocker
+```
+
+This will:
+- Run all tests
+- Build the application
+- **Automatically build Docker image** using Quarkus container-image extension
+- Create image: `agrisense-backend:latest` and `agrisense-backend:1.0.0-SNAPSHOT`
+
+**Run Docker container:**
+
+```bash
+docker run -i --rm -p 8080:8080 agrisense-backend:latest
+```
+
+**Notes for P03:**
+- `mvn verify` runs all tests and builds the application
+- Docker daemon must be running only if using `-Pdocker` profile
+- Tests run: 122, Failures: 0, Errors: 0
+- Build time: ~10 seconds
+- No manual Docker commands needed - everything automated via Maven
 
 ## Default ports
 

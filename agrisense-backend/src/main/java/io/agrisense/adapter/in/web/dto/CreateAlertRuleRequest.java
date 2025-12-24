@@ -13,6 +13,11 @@ public class CreateAlertRuleRequest {
     @NotNull(message = "Condition is required")
     private ECondition condition;
 
+    
+    @NotNull(message = "Threshold value is required")
+    @Positive(message = "Threshold value must be positive")
+    private Double threshold;
+    
     private String description;
     
     public CreateAlertRuleRequest() {

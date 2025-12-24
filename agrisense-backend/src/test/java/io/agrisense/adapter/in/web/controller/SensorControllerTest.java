@@ -194,6 +194,8 @@ public class SensorControllerTest {
     @Test
     public void testGetSensorById_WithInvalidId_Returns404() {
 
+        when(useCase.getSensorById(999L)).thenThrow(new IllegalArgumentException("Sensor with ID 999 not found."));
+
 
         // In unit test, exception is not caught by GlobalExceptionHandler
         // So we expect the exception to be thrown

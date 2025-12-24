@@ -80,6 +80,7 @@ public class AlertRuleControllerTest {
 
     }
 
+    }
     @Test
     public void testCreateAlertRule_WithMissingValue_Returns400() {
         CreateAlertRuleRequest req = new CreateAlertRuleRequest("rule1", io.agrisense.domain.model.ECondition.GREATER_THAN, null, "desc");
